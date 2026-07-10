@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Modern Berlin Restaurant - Login</title>
+  <style>
+    body {
+      font-family: 'Poppins', Arial, sans-serif;
+      background: linear-gradient(180deg, #121212 0%, #1A1A2E 100%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      color: #E0E0E0;
+      margin: 0;
+    }
+    .login-container {
+      background: #1E1E2E;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+      width: 320px;
+      border: 1px solid rgba(201, 168, 76, 0.15);
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 1rem;
+      color: #F5F5F5;
+    }
+    label {
+      display: block;
+      margin-top: 1rem;
+      color: #B0B0B0;
+    }
+    input[type="text"],
+    input[type="email"],
+    input[type="password"] {
+      width: 100%;
+      padding: 0.5rem;
+      margin-top: 0.25rem;
+      border: 1px solid rgba(201, 168, 76, 0.2);
+      border-radius: 8px;
+      box-sizing: border-box;
+      background: #2A2A3A;
+      color: #E0E0E0;
+    }
+    button {
+      margin-top: 1.5rem;
+      width: 100%;
+      padding: 0.75rem;
+      background-color: #C9A84C;
+      border: none;
+      border-radius: 25px;
+      color: #121212;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    button:hover {
+      background-color: #E0C068;
+    }
+    .error {
+      color: #ef5350;
+      margin-top: 0.5rem;
+      font-size: 0.9rem;
+      display: none;
+    }
+    .link-text {
+      text-align: center;
+      margin-top: 1rem;
+    }
+    .link-text a {
+      color: #C9A84C;
+      text-decoration: none;
+    }
+    .link-text a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <h2>Login</h2>
+    <form id="loginForm">
+      <label for="email">Email:</label>
+      <input type="email" id="email" required />
+
+      <label for="password">Password:</label>
+      <input type="password" id="password" required />
+
+      <button type="submit">Login</button>
+      <div class="error" id="errorMsg"></div>
+    </form>
+    <div class="link-text">
+      Don't have an account? <a href="/signup">Sign up here</a>
+    </div>
+  </div>
+
+  <script>
+    const API_BASE = `${window.location.origin}/api`;
+    const loginForm = document.getElementById("loginForm");
+    const errorMsg = document.getElementById("errorMsg");
+
+    loginForm.addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value.trim();
+      errorMsg.style.display = "none";
+
+      if (!email || !password) {
+        errorMsg.textContent = "All fields are required!";
+        errorMsg.style.display = "block";
+        return;
+      }
+
+      fetch(`${API_BASE}/auth/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      })
+      .then(async (response) => {
+        const data = await response.json().catch(() => ({}));
+        if (response.ok && data.success) {
+          localStorage.setItem('isLoggedIn', 'true');
+          localStorage.setItem('userName', data.user.name);
+          localStorage.setItem('userEmail', data.user.email);
+          localStorage.setItem('token', data.token);
+          alert('Login successful!');
+          window.location.href = '/';
+        } else {
+          errorMsg.textContent = data.message || 'Login failed.';
+          errorMsg.style.display = 'block';
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        errorMsg.textContent = 'An error occurred during login.';
+        errorMsg.style.display = 'block';
+      });
+    });
+  </script>
+</body>
+</html>

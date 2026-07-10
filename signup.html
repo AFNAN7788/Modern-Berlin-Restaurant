@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Modern Berlin Restaurant - Sign Up</title>
+  <style>
+    body {
+      font-family: 'Poppins', Arial, sans-serif;
+      background: linear-gradient(180deg, #121212 0%, #1A1A2E 100%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      color: #E0E0E0;
+      margin: 0;
+    }
+    .signup-container {
+      background: #1E1E2E;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+      width: 320px;
+      border: 1px solid rgba(201, 168, 76, 0.15);
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 1rem;
+      color: #F5F5F5;
+    }
+    label {
+      display: block;
+      margin-top: 1rem;
+      color: #B0B0B0;
+    }
+    input[type="text"],
+    input[type="email"],
+    input[type="password"] {
+      width: 100%;
+      padding: 0.5rem;
+      margin-top: 0.25rem;
+      border: 1px solid rgba(201, 168, 76, 0.2);
+      border-radius: 8px;
+      box-sizing: border-box;
+      background: #2A2A3A;
+      color: #E0E0E0;
+    }
+    button {
+      margin-top: 1.5rem;
+      width: 100%;
+      padding: 0.75rem;
+      background-color: #C9A84C;
+      border: none;
+      border-radius: 25px;
+      color: #121212;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    button:hover {
+      background-color: #E0C068;
+    }
+    .error {
+      color: #ef5350;
+      margin-top: 0.5rem;
+      font-size: 0.9rem;
+      display: none;
+    }
+    .link-text {
+      text-align: center;
+      margin-top: 1rem;
+    }
+    .link-text a {
+      color: #C9A84C;
+      text-decoration: none;
+    }
+    .link-text a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="signup-container">
+    <h2>Sign Up</h2>
+    <form id="signupForm">
+      <label for="name">Name:</label>
+      <input type="text" id="name" required />
+
+      <label for="email">Email:</label>
+      <input type="email" id="email" required />
+
+      <label for="password">Password:</label>
+      <input type="password" id="password" required />
+
+      <label for="confirmPassword">Confirm Password:</label>
+      <input type="password" id="confirmPassword" required />
+
+      <button type="submit">Sign Up</button>
+      <div class="error" id="errorMsg"></div>
+    </form>
+    <div class="link-text">
+      Already have an account? <a href="/login">Login here</a>
+    </div>
+  </div>
+
+  <script>
+    const API_BASE = `${window.location.origin}/api`;
+    const signupForm = document.getElementById("signupForm");
+    const errorMsg = document.getElementById("errorMsg");
+
+    signupForm.addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const name = document.getElementById("name").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value.trim();
+      const confirmPassword = document.getElementById("confirmPassword").value.trim();
+      errorMsg.style.display = "none";
+
+      if (!name || !email || !password || !confirmPassword) {
+        errorMsg.textContent = "All fields are required!";
+        errorMsg.style.display = "block";
+        return;
+      }
+
+      if (password !== confirmPassword) {
+        errorMsg.textContent = "Passwords do not match!";
+        errorMsg.style.display = "block";
+        return;
+      }
+
+      fetch(`${API_BASE}/auth/register`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ name, email, password }),
+      })
+      .then(async (response) => {
+        const data = await response.json().catch(() => ({}));
+        if (response.ok && data.success) {
+          alert('Sign Up successful! You can now log in.');
+          window.location.href = '/login';
+        } else {
+          errorMsg.textContent = data.message || 'Registration failed.';
+          errorMsg.style.display = 'block';
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        errorMsg.textContent = 'An error occurred during registration.';
+        errorMsg.style.display = 'block';
+      });
+    });
+  </script>
+</body>
+</html>

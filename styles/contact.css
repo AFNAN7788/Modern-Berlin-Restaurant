@@ -1,0 +1,337 @@
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  padding: 0;
+  display: flex;
+}
+.contactPage {
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+  width: 80%;
+  /* width: 75%; */
+}
+.page{
+  display: flex;
+  width: 100%;
+  gap: 100px;
+}
+.contactPage h1 {
+  font-size: 40px;
+}
+.contactPage p {
+  font-size: 18px;
+}
+input {
+  height: 100px;
+  width: 330px;
+  font-size: 18px;
+  border: 1px solid #acacb2;
+  text-align: left;
+  padding: 20px;
+}
+.inputsDiv2 {
+  display: flex;
+  flex-direction: column;
+}
+.inputsDiv2 input{
+  width: 700px;
+  margin-bottom: 15px;
+  padding: 20px;
+}
+.nameInputsdiv2nd{
+  display: flex;
+  gap: 20px;
+  margin-bottom: 15px;
+}
+.names {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 15px;
+}
+#describe {
+  width: 681px;
+  margin-bottom: 15px;
+  padding: 20px;
+  height: 160px;
+  font-size: 18px;
+  resize: none;
+}
+#btn {
+  height: 80px;
+  width: 681px;
+  font-size: 18px;
+  background-color: #39db4a;
+  color: white;
+  border: 1px solid #acacb2;
+}
+#btn2 {
+  height: 48px;
+  width: 66px;
+  font-size: 28px;
+  color: #eee;
+  background-color: #39db4a;
+  border: 1px solid #acacb2;
+}
+.image {
+  width: 30%;
+  background-image: url(../assets/images/Picsart_24-05-01_16-48-15-311.jpg);
+  background-position: center;
+  background-origin: center;
+  background-size: cover;
+  height: 100vh;
+}
+@media only screen and (max-width: 1300px){
+.image{
+  width: 35%;
+}
+}
+@media only screen and (max-width: 1030px) {
+  .page{
+    gap: 0px;
+  }
+  @media (orientation: landscape){
+  .image{
+    height: 110vh;
+  }
+}
+  .contactPage{
+    width: 53%;
+  }
+  input {
+    height: 100px;
+    width: 300px;
+    font-size: 18px;
+    border: 1px solid #acacb2;
+    text-align: left;
+    padding: 20px;
+  }
+  .inputsDiv2 {
+    display: flex;
+    flex-direction: column;
+  }
+  .nameInputsdiv2nd{
+    display: flex;
+    gap: 20px;
+    margin-bottom: 15px;
+  }
+  .names {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 15px;
+  }
+  #describe {
+    width: 558px;
+  }
+  #btn {
+    height: 80px;
+    width: 557px;
+    font-size: 16px;
+    background-color: #39db4a;
+    color: white;
+    border: 1px solid #acacb2;
+    text-transform: uppercase;
+    font-weight: bold;
+  }
+  #btn2 {
+    height: 48px;
+    width: 66px;
+    font-size: 28px;
+    color: #eee;
+    background-color: #39db4a;
+    border: 1px solid #acacb2;
+  }
+}
+@media only screen and (max-width: 900px){
+  .image{
+    display: block;
+    width: 40%;
+    background-size: contain;
+  }
+  .page{
+    gap: 20px;
+  }
+  .contactPage {
+    margin: auto;
+    width: 70%;
+    display: flex;
+    align-items: center;
+  } 
+  input {
+    height: 100px;
+    width: 390px;
+  }
+  input:hover {
+    border: 3px solid #39db4a;
+  }
+  .inputsDiv2 {
+    display: flex;
+    flex-direction: column;
+  }
+  .inputsDiv2 input{
+    width: 390px;
+    margin-bottom: 15px;
+    padding: 20px;
+  }
+  .names {
+    display: flex;
+    flex-direction: column;
+    gap:10px;
+    margin-bottom: 15px;
+  }
+  #describe {
+    width: 390px;
+    margin-bottom: 15px;
+    padding: 20px;
+    height: 190px;
+    font-size: 18px;
+  }
+  #btn {
+    height: 80px;
+    width: 390px;
+    font-size: 18px;
+    background-color: #39db4a;
+    color: white;
+    border: 1px solid #acacb2;
+  }
+  #btn2 {
+    height: 48px;
+    width: 66px;
+    font-size: 28px;
+    color: #eee;
+    background-color: #39db4a;
+    border: 1px solid #acacb2;
+  }  
+}
+@media only screen and (max-width: 768px) {
+  .image {
+   display: none; 
+    }
+    .page{
+      gap: 0px;
+      flex-direction: column-reverse;
+    }
+    .contactPage {
+      margin: auto;
+      width: 100%;
+      display: flex;
+      align-items: center;
+    } 
+    input {
+      height: 100px;
+      width: 390px;
+    }
+    input:hover {
+      border: 3px solid #39db4a;
+    }
+    .inputsDiv2 {
+      display: flex;
+      flex-direction: column;
+    }
+    .inputsDiv2 input{
+      width: 390px;
+      margin-bottom: 15px;
+      padding: 20px;
+    }
+    .names {
+      display: flex;
+      flex-direction: column;
+      gap:10px;
+      margin-bottom: 15px;
+    }
+    #describe {
+      width: 390px;
+      margin-bottom: 15px;
+      padding: 20px;
+      height: 190px;
+      font-size: 18px;
+    }
+    #btn {
+      height: 80px;
+      width: 390px;
+      font-size: 18px;
+      background-color: #39db4a;
+      color: white;
+      border: 1px solid #acacb2;
+    }
+    #btn2 {
+      height: 48px;
+      width: 66px;
+      font-size: 28px;
+      color: #eee;
+      background-color: #39db4a;
+      border: 1px solid #acacb2;
+    }  
+    .but{
+      display: flex;
+      flex-direction: row-reverse;
+    }
+}
+@media screen and (max-width: 600px){
+  .page{
+    gap: 0px;
+    flex-direction: column-reverse;
+  }
+  .image {
+  display: none; 
+  }
+  .contactPage {
+    margin: auto;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    text-align: center;
+}
+.contactPage p{
+  font-size: 20px;
+}
+  input {
+    height: 90px;
+    width: 320px;
+  }
+  .inputsDiv2 {
+    display: flex;
+    flex-direction: column;
+  }
+  .inputsDiv2 input{
+    width: 320px;
+    margin-bottom: 15px;
+    padding: 20px;
+  }
+  .names {
+    display: flex;
+    flex-direction: column;
+    gap:10px;
+    margin-bottom: 10px;
+  }
+  #describe {
+    width: 320px;
+    margin-bottom: 15px;
+    padding: 20px;
+    height: 140px;
+    font-size: 18px;
+  }
+  #btn {
+    height: 80px;
+    width: 320px;
+    font-size: 18px;
+    background-color: #39db4a;
+    color: white;
+    border: 1px solid #acacb2;
+  }
+  #btn2 {
+    height: 48px;
+    width: 66px;
+    font-size: 28px;
+    color: #eee;
+    background-color: #39db4a;
+    border: 1px solid #acacb2;
+  } 
+  .but{
+    height: 30px;
+    display: flex;
+    flex-direction: row-reverse;
+  }
+}

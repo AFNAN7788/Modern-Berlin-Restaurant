@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reserve a Table – Modern Berlin Restaurant</title>
+    <link rel="stylesheet" href="./styles/booking.css" />
+    <link rel="stylesheet" href="./fonts/remixicon.css" />
+  </head>
+  <body>
+    <nav class="booking-nav">
+      <a href="/" class="logo-text">Modern Berlin Restaurant</a>
+      <div class="nav-links">
+        <a href="/">Home</a>
+        <a href="/#menus">Menu</a>
+        <a href="/contact">Contact</a>
+        <a href="/cart">Cart</a>
+      </div>
+    </nav>
+
+    <main class="booking-page">
+      <h1>Reserve a <span>Table</span></h1>
+      <p class="subtitle">Choose your date, time and party size. We’ll confirm your reservation.</p>
+
+      <form id="bookingForm" class="booking-form">
+        <label for="name">Your name *</label>
+        <input type="text" id="name" name="name" required placeholder="e.g. John Smith" />
+
+        <label for="email">Email *</label>
+        <input type="email" id="email" name="email" required placeholder="john@example.com" />
+
+        <label for="date">Date *</label>
+        <input type="date" id="date" name="date" required />
+
+        <label for="time">Time *</label>
+        <select id="time" name="time" required>
+          <option value="">Select time</option>
+        </select>
+
+        <label for="guests">Number of guests *</label>
+        <select id="guests" name="guests" required>
+          <option value="">Select</option>
+          <option value="1">1</option>
+          <option value="2" selected>2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+          <option value="7">7</option>
+          <option value="8">8</option>
+          <option value="9">9</option>
+          <option value="10">10+</option>
+        </select>
+
+        <label for="specialRequests">Special requests (optional)</label>
+        <textarea id="specialRequests" name="specialRequests" placeholder="Dietary needs, high chair, etc."></textarea>
+
+        <button type="submit" id="submitBtn">Reserve table</button>
+        <div id="bookingMessage" class="booking-message" role="alert"></div>
+      </form>
+
+      <section class="my-bookings" id="myBookingsSection" style="display: none;">
+        <h2>Your reservations</h2>
+        <ul id="myBookingsList"></ul>
+      </section>
+    </main>
+
+    <script>
+      const API_BASE = `${window.location.origin}/api`;
+      const form = document.getElementById('bookingForm');
+      const dateInput = document.getElementById('date');
+      const timeSelect = document.getElementById('time');
+      const submitBtn = document.getElementById('submitBtn');
+      const messageEl = document.getElementById('bookingMessage');
+      const myBookingsSection = document.getElementById('myBookingsSection');
+      const myBookingsList = document.getElementById('myBookingsList');
+
+      const today = new Date().toISOString().slice(0, 10);
+      dateInput.min = today;
+
+      function showMessage(text, isError) {
+        messageEl.textContent = text;
+        messageEl.className = 'booking-message ' + (isError ? 'error' : 'success');
+        messageEl.style.display = 'block';
+      }
+
+      function loadTimeSlots() {
+        const date = dateInput.value;
+        if (!date) {
+          timeSelect.innerHTML = '<option value="">Select time</option>';
+          return;
+        }
+        fetch(`${API_BASE}/bookings/slots?date=${encodeURIComponent(date)}`)
+          .then(async (res) => {
+            const data = await res.json();
+            if (!res.ok) throw new Error(data.message || 'Failed to load slots');
+            return data;
+          })
+          .then((data) => {
+            timeSelect.innerHTML = '<option value="">Select time</option>';
+            if (data.success && data.available && data.available.length) {
+              data.available.forEach((t) => {
+                const opt = document.createElement('option');
+                opt.value = t;
+                opt.textContent = t;
+                timeSelect.appendChild(opt);
+              });
+            } else {
+              const opt = document.createElement('option');
+              opt.textContent = 'No slots available';
+              opt.disabled = true;
+              timeSelect.appendChild(opt);
+            }
+          })
+          .catch(() => {
+            timeSelect.innerHTML = '<option value="">Select time</option><option disabled>Unable to load slots</option>';
+          });
+      }
+
+      dateInput.addEventListener('change', loadTimeSlots);
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        submitBtn.disabled = true;
+        messageEl.style.display = 'none';
+
+        const payload = {
+          name: document.getElementById('name').value.trim(),
+          email: document.getElementById('email').value.trim(),
+          date: dateInput.value,
+          time: timeSelect.value,
+          guests: document.getElementById('guests').value,
+          specialRequests: document.getElementById('specialRequests').value.trim(),
+        };
+
+        try {
+          const res = await fetch(`${API_BASE}/bookings`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload),
+          });
+          const data = await res.json().catch(() => ({}));
+
+          if (res.ok && data.success) {
+            showMessage('Table reserved successfully. We’ll send a confirmation to your email.', false);
+            form.reset();
+            dateInput.min = new Date().toISOString().slice(0, 10);
+            loadTimeSlots();
+            loadMyBookings(payload.email);
+          } else {
+            showMessage(data.message || 'Reservation failed.', true);
+          }
+        } catch (err) {
+          showMessage('Network error. Is the server running on http://localhost:5000?', true);
+        } finally {
+          submitBtn.disabled = false;
+        }
+      });
+
+      function loadMyBookings(email) {
+        if (!email) return;
+        fetch(`${API_BASE}/bookings?email=${encodeURIComponent(email)}`)
+          .then(async (res) => {
+            const data = await res.json();
+            if (!res.ok) throw new Error(data.message || 'Failed to load bookings');
+            return data;
+          })
+          .then((data) => {
+            if (data.success && data.bookings && data.bookings.length > 0) {
+              myBookingsList.innerHTML = data.bookings
+                .map(
+                  (b) =>
+                    `<li><strong>${b.date}</strong> at <strong>${b.time}</strong> – ${b.guests} guest(s) – ${b.name}</li>`
+                )
+                .join('');
+              myBookingsSection.style.display = 'block';
+            }
+          })
+          .catch(() => {});
+      }
+
+      document.addEventListener('DOMContentLoaded', () => {
+        const savedEmail = localStorage.getItem('userEmail');
+        const emailEl = document.getElementById('email');
+        if (savedEmail) emailEl.value = savedEmail;
+        const savedName = localStorage.getItem('userName');
+        if (savedName) document.getElementById('name').value = savedName;
+        if (dateInput.value) loadTimeSlots();
+        if (savedEmail) loadMyBookings(savedEmail);
+      });
+    </script>
+  </body>
+</html>

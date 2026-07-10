@@ -1,0 +1,124 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap") ;
+*{
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif !important;
+} 
+body{
+  background: linear-gradient(180deg, #121212 0%, #1A1A2E 100%);
+  overflow-x: hidden;
+  color: #E0E0E0;
+}
+:root{
+  --primary-clr: #C9A84C;
+  --primary-font-clr: #F5F5F5;
+  --secondary-font-clr: #B0B0B0;
+  --heading-fs: 54px;
+  --body-fs: 20px;
+  --mobile-heading-fs: 28px;
+  --mobile-body-fs: 12px;
+  --card-bg: #1E1E2E;
+  --card-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  --accent: #C9A84C;
+  --accent-hover: #E0C068;
+  --surface: #16213E;
+}
+@media only screen and (min-width: 300px) {
+  html, body {
+    overflow-x: hidden;
+}
+}
+
+.cookie-consent-banner {
+  position: fixed;
+  left: 50%;
+  bottom: 16px;
+  transform: translateX(-50%);
+  width: calc(100% - 32px);
+  max-width: 640px;
+  background: #1E1E2E;
+  padding: 12px 16px;
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  display: none;
+  align-items: center;
+  gap: 12px;
+  z-index: 1000;
+  border: 1px solid rgba(201, 168, 76, 0.2);
+}
+
+.cookie-consent-banner--visible {
+  display: flex;
+}
+
+.cookie-consent-text {
+  flex: 1;
+  font-size: 14px;
+  color: #B0B0B0;
+}
+
+.cookie-consent-text a {
+  color: #C9A84C;
+  font-weight: 500;
+}
+
+.cookie-consent-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.cookie-consent-actions button {
+  border-radius: 999px;
+  border: none;
+  padding: 6px 14px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.cookie-consent-actions button#cookie-accept {
+  background-color: #C9A84C;
+  color: #121212;
+  font-weight: 600;
+}
+
+.cookie-consent-actions button#cookie-reject {
+  background-color: #2A2A3A;
+  color: #B0B0B0;
+}
+
+@media (max-width: 600px) {
+  .cookie-consent-banner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+.privacy-page {
+  max-width: 960px;
+  margin: 120px auto 40px;
+  padding: 0 16px 40px;
+  color: #E0E0E0;
+}
+
+.privacy-page h1 {
+  font-size: 32px;
+  margin-bottom: 16px;
+  color: #F5F5F5;
+}
+
+.privacy-page h2 {
+  margin-top: 24px;
+  margin-bottom: 8px;
+  font-size: 22px;
+  color: #F5F5F5;
+}
+
+.privacy-page p,
+.privacy-page li {
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+.privacy-page ul {
+  padding-left: 20px;
+}

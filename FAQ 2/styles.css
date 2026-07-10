@@ -1,0 +1,355 @@
+*{
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+}
+
+:root{
+--main-color: #000000;
+--secondary-color: #808080;
+--headingcolor: #39DB4A;
+
+
+}
+
+body{
+background-color: lightgray;    
+
+}
+
+
+.faq-container{
+width: 50%;  
+display: flex;
+padding: 7%;
+gap: 50px;
+flex-direction: column;
+align-items: center;
+margin: 5% auto;
+background-color: aliceblue;
+}
+
+.sp{
+color: var(--headingcolor);
+
+
+}
+
+
+.heading{
+display: flex;
+flex-direction: column;
+align-items: center;
+gap: 12px;
+
+}
+
+.heading h1{
+color: var(--main-color);    
+}
+
+.heading p{
+color: var(--secondary-color);    
+font-size: large;
+}
+
+.questions{
+display: flex;
+flex-direction: column;
+width: 700px;
+}
+
+.card-container {
+display: flex;
+flex-direction: column;
+padding: 25px;
+border-bottom: 1px solid var(--secondary-color);
+
+}
+
+
+
+.toggle{
+border: 1px solid var(--headingcolor);
+height: 64px;
+display: flex;
+width: 64px;
+border-radius: 50%;
+margin-top: 41%;
+font-size: 64px;
+font-weight: 900;
+cursor: pointer;
+align-items: center;
+justify-content: center;
+}
+
+.toggle-icon{
+text-align: center;
+font-weight: bolder;
+cursor: pointer;
+}
+
+.toggle-icon:hover{
+color: var(--headingcolor);    
+
+}
+
+.heading-button-container{
+display: flex;
+flex-direction: row;
+align-items: center;
+justify-content: space-between;
+gap: 55px;
+
+
+}
+
+.heading-button-container p{
+color: var(--secondary-color);
+
+}
+
+.pgg p{
+font-size: 20px;
+
+}
+
+@media (min-width: 1060px) {
+.faq-container {
+width: 80%; 
+padding: 8%;
+gap: 20px;
+}
+
+        
+.questions {
+width: 100%;
+}
+        
+.card-container {
+flex-direction: column;
+gap: 37px;
+}
+
+
+        
+.toggle {
+margin-top: 10px; 
+}
+}
+
+
+
+
+@media (max-width: 1060px) {
+.faq-container {
+width: 100%;
+margin: 0;
+padding: 10%;
+align-items: center;
+justify-content: center;
+}
+.faq-container h1{
+font-size: 26px;    
+}
+
+.faq-container p{
+font-size: 17px;
+}
+
+
+.questions {
+display: flex;
+flex-direction: column;
+gap: 20px;
+width: 100%;
+}
+
+.card-container {
+flex-direction: column;
+gap: 23px;
+}
+
+.card-container h1{
+font-size: 27px;
+}
+
+.heading-button-container{
+display: flex;
+align-items: center;
+justify-content: space-between;
+gap: 20px;
+
+    
+}
+
+
+.toggle {
+font-size: 45px;
+height: 50px;
+width: 50px;
+}
+}
+
+@media (max-width: 760px) {
+.faq-container {
+width: 100%; 
+padding: 10%;
+gap: 20px;
+
+}
+
+.faq-container h1{
+font-size: 26px;    
+}
+    
+.faq-container p{
+font-size: 17px;
+}
+    
+.questions {
+display: flex;
+flex-direction: column;
+width: 100%;
+}
+    
+.card-container {
+flex-direction: column;
+gap: 25px;
+}
+
+.card-container h1{
+font-size: 25px;
+}
+    
+
+.heading-button-container{
+display: flex;
+align-items: center;
+justify-content: space-between;
+gap: 20px;
+    
+}
+    
+.toggle {
+font-size: 36px;
+height: 40px;
+width: 40px; 
+}
+}
+ 
+@media (max-width: 560px) {
+
+.faq-container {
+width: 100%;
+margin: 0;
+height: 100%;
+display: flex;
+flex-direction: column;
+gap: 20px;
+
+}
+
+.faq-container h1{
+font-size: 21px;    
+}
+        
+.faq-container p{
+font-size: 14px;
+}
+
+
+.heading{
+display: flex;  
+flex-direction: column;
+align-items: center;  
+}
+        
+.questions {
+display: flex;
+flex-direction: column;
+gap: 25px;
+width: 100%;
+}
+        
+.card-container {
+flex-direction: column;
+width: 100%;
+gap: 17px; 
+}
+
+.card-container h1{
+font-size: 16px;
+}
+
+.card-container p{
+font-size: 13px;
+}
+
+.heading-button-container{
+flex-direction: row;
+align-items: center;
+gap: 50px;    
+}
+
+
+.toggle {
+font-size: 19px;
+height: 22px;
+width: 22px; 
+
+}}
+
+
+@media (max-width: 400px) {
+
+.faq-container {
+width: 100%;
+display: flex;
+flex-direction: column;
+gap: 22px;
+
+}
+
+.faq-container h1{
+font-size: 18px;    
+}
+            
+.faq-container p{
+font-size: 13px;
+}
+
+           
+.questions {
+display: flex;
+flex-direction: column;
+gap: 25px;
+width: 100%;
+}
+            
+.card-container {
+    flex-direction: column;
+    width: 100%;
+    gap: 15px; 
+    }
+    
+    .card-container h1{
+    font-size: 15px;
+    }
+    
+    .card-container p{
+    font-size: 12px;
+    }
+    
+    .heading-button-container{
+    flex-direction: row;
+    align-items: center;
+    gap: 50px;    
+    }
+.toggle {
+font-size: 18px;
+height: 22px;
+width: 22px; 
+    
+}}
+    
