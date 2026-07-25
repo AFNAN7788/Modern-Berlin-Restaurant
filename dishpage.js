@@ -1,3 +1,26 @@
+function showToast(message) {
+  let container = document.getElementById('toastContainer');
+  if (!container) {
+    container = document.createElement('div');
+    container.id = 'toastContainer';
+    container.className = 'toast-container';
+    document.body.appendChild(container);
+  }
+  const toast = document.createElement('div');
+  toast.className = 'toast';
+  toast.innerHTML = `
+    <span class="toast-icon">✓</span>
+    <span class="toast-message">${message}</span>
+  `;
+  container.appendChild(toast);
+  setTimeout(() => {
+    toast.classList.add('toast-out');
+    toast.addEventListener('animationend', () => {
+      toast.remove();
+    });
+  }, 2500);
+}
+
 const allDishes = {
   "Main Dish": [
     { name: "Wiener Schnitzel", price: "18 €", img: "./assets/images/schnitzel.jpg" },
@@ -67,6 +90,12 @@ const allDishes = {
   ]
 };
 
+(function checkAuth() {
+  if (localStorage.getItem('isLoggedIn') !== 'true') {
+    window.location.href = 'login.html';
+  }
+})();
+
 // Determine category from URL
 const path = window.location.pathname;
 const category = path.includes("main-dish") ? "Main Dish" :
@@ -99,8 +128,10 @@ if (category && allDishes[category]) {
         let cart = JSON.parse(localStorage.getItem("cart")) || [];
         cart.push(dish);
         localStorage.setItem("cart", JSON.stringify(cart));
-        alert(`${dish.name} added to cart!`);
-        window.location.href = "cart.html";
+        showToast(`${dish.name} added to cart!`);
+        if (typeof updateCartBadge === 'function') {
+          updateCartBadge();
+        }
       }
     });
 

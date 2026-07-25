@@ -4,167 +4,226 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Modern Berlin Restaurant - My Account</title>
+    <link rel="stylesheet" href="./fonts/remixicon.css">
     <link rel="stylesheet" href="./styles/global.css">
     <link rel="stylesheet" href="./styles/header.css">
     <link rel="stylesheet" href="./styles/nav.css">
     <link rel="stylesheet" href="./styles/footer.css">
+<link rel="stylesheet" href="./cart.css">
     <style>
         body {
-            font-family: 'Poppins', Arial, sans-serif;
-            background: linear-gradient(180deg, #121212 0%, #1A1A2E 100%);
+            font-family: var(--font-primary);
+            background: var(--bg-primary);
             margin: 0;
             padding: 0;
             display: flex;
             flex-direction: column;
             min-height: 100vh;
-            color: #E0E0E0;
+            color: var(--text-primary);
+            padding-top: 100px;
         }
         .container {
             flex: 1;
             max-width: 800px;
-            margin: 50px auto;
-            padding: 20px;
-            background-color: #1E1E2E;
-            border-radius: 12px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-            border: 1px solid rgba(201, 168, 76, 0.15);
+            width: 90%;
+            margin: 40px auto;
+            padding: 40px;
+            background-color: var(--bg-card);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--glass-border);
+            animation: scaleIn 0.5s var(--ease-out) both;
         }
         h1 {
+            font-family: var(--font-display);
+            font-size: clamp(28px, 4vw, 42px);
             text-align: center;
-            color: #F5F5F5;
+            color: var(--text-primary);
             margin-bottom: 30px;
+            font-weight: 800;
         }
         .account-section {
-            margin-bottom: 20px;
-            padding: 15px;
-            border: 1px solid rgba(201, 168, 76, 0.15);
-            border-radius: 8px;
-            background-color: #2A2A3A;
+            margin-bottom: 24px;
+            padding: 24px;
+            border: 1px solid var(--accent-border);
+            border-radius: var(--radius-md);
+            background-color: var(--bg-surface);
         }
         .account-section h2 {
-            color: #C9A84C;
-            margin-top: 0;
+            font-family: var(--font-display);
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 12px;
         }
         .account-section p {
-            margin: 5px 0;
-            color: #B0B0B0;
+            margin: 8px 0;
+            color: var(--text-secondary);
+            font-size: 15px;
         }
         .account-section .btn {
             display: inline-block;
-            padding: 8px 15px;
-            background-color: #C9A84C;
-            color: #121212;
+            padding: 10px 22px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+            color: var(--bg-primary);
             text-decoration: none;
-            border-radius: 25px;
-            margin-top: 10px;
-            font-weight: 600;
+            border-radius: var(--radius-full);
+            margin-top: 14px;
+            font-weight: 700;
             border: none;
             cursor: pointer;
-            transition: background-color 0.3s ease;
+            transition: all var(--transition-fast);
+            font-size: 14px;
         }
         .account-section .btn:hover {
-            background-color: #E0C068;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(212, 168, 67, 0.3);
         }
     </style>
 </head>
 <body>
-    <header>
-        <!-- Header content will go here, similar to other pages -->
-        <nav class="navbar">
-            <a href="index.html" class="logo">Modern Berlin Restaurant</a>
-            <ul class="nav-links">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="Fastfood.html">Fast Food</a></li>
-                <li><a href="main-dish.html">Main Dishes</a></li>
-                <li><a href="dessert.html">Desserts</a></li>
-                <li><a href="breakfast.html">Breakfast</a></li>
-                <li><a href="contact.html">Contact</a></li>
-                <li><a href="cart.html">Cart</a></li>
-                <li><a href="login.html">Login</a></li>
-                <li><a href="signup.html">Sign Up</a></li>
-                <li><a href="account.html">Account</a></li>
-            </ul>
-        </nav>
-    </header>
+    <!-- ✅ Navbar Start -->
+    <div class="nav">
+      <nav>
+        <a href="/" class="logo-text">Modern Berlin Restaurant</a>
+        <input type="checkbox" id="check" />
+        <label for="check" class="checkbtn">
+          <i class="ri-menu-line"></i>
+        </label>
+        <ul>
+          <li><a href="/">Home</a></li>
+          <li><a href="/breakfast">Breakfast</a></li>
+          <li><a href="/Fastfood">Fast Food</a></li>
+          <li><a href="/dessert">Dessert</a></li>
+          <li><a href="/main-dish">Main Dish</a></li>
+          <li><a href="/cart">Cart</a></li>
+        </ul>
+      </nav>
+    </div>
+    <!-- ✅ Navbar End -->
 
     <div class="container">
         <h1>My Account</h1>
 
         <div class="account-section">
             <h2>Profile Information</h2>
-            <p><strong>Name:</strong> <span id="userName"></span></p>
-            <p><strong>Email:</strong> <span id="userEmail"></span></p>
-            <button id="editProfileBtn" class="btn" type="button">Edit Profile</button>
+            <p><strong>Name:</strong> <span id="userName">Not set</span></p>
+            <p><strong>Email:</strong> <span id="userEmail">Not set</span></p>
+            <p><strong>Phone:</strong> <span id="userPhone">+49 170 1234567</span></p>
+            <p><strong>Delivery Address:</strong> <span id="userAddress">Friedrichstraße 12, 10117 Berlin</span></p>
+            <button id="editProfileBtn" class="btn" type="button"><i class="ri-edit-line"></i> Edit Profile</button>
         </div>
-
-       
-
-
-   
 
         <div class="account-section">
             <h2>Logout</h2>
             <p>Click below to securely log out of your account.</p>
-            <button id="logoutBtn" class="btn">Logout</button>
+            <button id="logoutBtn" class="btn"><i class="ri-logout-box-r-line"></i> Logout</button>
+        </div>
+    </div>
+
+    <!-- Profile Edit Modal -->
+    <div id="editProfileModal" class="order-modal-overlay">
+        <div class="order-modal-card" style="text-align: left;">
+            <h2 style="text-align: center; margin-bottom: 20px;">Edit Profile</h2>
+            <form id="editProfileForm">
+                <label style="display:block; margin-bottom: 6px; font-size: 14px; color: var(--text-secondary);">Full Name</label>
+                <input type="text" id="editNameInput" style="width:100%; padding: 10px; margin-bottom: 14px; background: var(--bg-surface); border: 1px solid var(--accent-border); border-radius: var(--radius-sm); color: var(--text-primary);" required />
+
+                <label style="display:block; margin-bottom: 6px; font-size: 14px; color: var(--text-secondary);">Email Address</label>
+                <input type="email" id="editEmailInput" style="width:100%; padding: 10px; margin-bottom: 14px; background: var(--bg-surface); border: 1px solid var(--accent-border); border-radius: var(--radius-sm); color: var(--text-primary);" required />
+
+                <label style="display:block; margin-bottom: 6px; font-size: 14px; color: var(--text-secondary);">Phone Number</label>
+                <input type="tel" id="editPhoneInput" style="width:100%; padding: 10px; margin-bottom: 14px; background: var(--bg-surface); border: 1px solid var(--accent-border); border-radius: var(--radius-sm); color: var(--text-primary);" placeholder="+49 170 1234567" />
+
+                <label style="display:block; margin-bottom: 6px; font-size: 14px; color: var(--text-secondary);">Delivery Address</label>
+                <input type="text" id="editAddressInput" style="width:100%; padding: 10px; margin-bottom: 20px; background: var(--bg-surface); border: 1px solid var(--accent-border); border-radius: var(--radius-sm); color: var(--text-primary);" placeholder="Street, City, Postal Code" />
+
+                <div style="display: flex; gap: 12px; justify-content: flex-end;">
+                    <button type="button" id="cancelEditBtn" class="btn" style="background: var(--bg-surface); color: var(--text-primary);">Cancel</button>
+                    <button type="submit" class="btn">Save Changes</button>
+                </div>
+            </form>
         </div>
     </div>
 
     <footer>
-        <!-- Footer content will go here, similar to other pages -->
-        <div class="footer-content">
-            <p>&copy; 2023 Modern Berlin Restaurant. All rights reserved.</p>
-            <div class="footer-links">
-                <a href="login.html">Login</a>
-                <a href="signup.html">Sign Up</a>
-                <a href="account.html">Account</a>
-            </div>
-        </div>
+        <section id="section7">
+            <div class="footer"></div>
+        </section>
     </footer>
+
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const isLoggedIn = localStorage.getItem('isLoggedIn');
-            let userName = localStorage.getItem('userName');
-            let userEmail = localStorage.getItem('userEmail');
+            let userName = localStorage.getItem('userName') || 'User';
+            let userEmail = localStorage.getItem('userEmail') || 'user@example.com';
+            let userPhone = localStorage.getItem('userPhone') || '+49 170 1234567';
+            let userAddress = localStorage.getItem('userAddress') || 'Friedrichstraße 12, 10117 Berlin';
 
-            if (isLoggedIn === 'true' && userName && userEmail) {
+            if (isLoggedIn === 'true') {
                 document.getElementById('userName').textContent = userName;
                 document.getElementById('userEmail').textContent = userEmail;
+                document.getElementById('userPhone').textContent = userPhone;
+                document.getElementById('userAddress').textContent = userAddress;
             } else {
-                // If not logged in, redirect to login page
                 window.location.href = 'login.html';
             }
 
             const logoutBtn = document.getElementById('logoutBtn');
             const editBtn = document.getElementById('editProfileBtn');
+            const modal = document.getElementById('editProfileModal');
+            const cancelBtn = document.getElementById('cancelEditBtn');
+            const editForm = document.getElementById('editProfileForm');
+
             if (logoutBtn) {
                 logoutBtn.addEventListener('click', () => {
                     localStorage.removeItem('isLoggedIn');
                     localStorage.removeItem('userName');
                     localStorage.removeItem('userEmail');
-                    localStorage.removeItem('token'); // Clear the token as well
-                    alert('Logged out successfully!');
+                    localStorage.removeItem('token');
                     window.location.href = 'login.html';
                 });
             }
 
-            if (editBtn) {
+            if (editBtn && modal) {
                 editBtn.addEventListener('click', () => {
-                    const newName = prompt('Enter your name:', userName || '');
-                    if (!newName) return;
+                    document.getElementById('editNameInput').value = localStorage.getItem('userName') || '';
+                    document.getElementById('editEmailInput').value = localStorage.getItem('userEmail') || '';
+                    document.getElementById('editPhoneInput').value = localStorage.getItem('userPhone') || '+49 170 1234567';
+                    document.getElementById('editAddressInput').value = localStorage.getItem('userAddress') || 'Friedrichstraße 12, 10117 Berlin';
+                    modal.classList.add('active');
+                });
+            }
 
-                    const newEmail = prompt('Enter your email:', userEmail || '');
-                    if (!newEmail) return;
+            if (cancelBtn && modal) {
+                cancelBtn.addEventListener('click', () => {
+                    modal.classList.remove('active');
+                });
+            }
 
-                    userName = newName.trim();
-                    userEmail = newEmail.trim();
+            if (editForm) {
+                editForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    const newName = document.getElementById('editNameInput').value.trim();
+                    const newEmail = document.getElementById('editEmailInput').value.trim();
+                    const newPhone = document.getElementById('editPhoneInput').value.trim();
+                    const newAddress = document.getElementById('editAddressInput').value.trim();
 
-                    localStorage.setItem('userName', userName);
-                    localStorage.setItem('userEmail', userEmail);
+                    if (!newName || !newEmail) return;
 
-                    document.getElementById('userName').textContent = userName;
-                    document.getElementById('userEmail').textContent = userEmail;
+                    localStorage.setItem('userName', newName);
+                    localStorage.setItem('userEmail', newEmail);
+                    localStorage.setItem('userPhone', newPhone);
+                    localStorage.setItem('userAddress', newAddress);
 
-                    alert('Profile updated (stored in this browser).');
+                    document.getElementById('userName').textContent = newName;
+                    document.getElementById('userEmail').textContent = newEmail;
+                    document.getElementById('userPhone').textContent = newPhone;
+                    document.getElementById('userAddress').textContent = newAddress;
+
+                    modal.classList.remove('active');
                 });
             }
         });

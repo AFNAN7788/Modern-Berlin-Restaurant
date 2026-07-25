@@ -37,14 +37,15 @@
         <button id="cookie-reject" type="button">Reject non-essential</button>
       </div>
     </div>
-    <section id="section1">--
+    <div class="toast-container" id="toastContainer"></div>
+    <section id="section1">
      <div class="nav">
       <nav>
         <input type="checkbox" id="check">
         <label for="check" class="checkbtn">
           <i class="ri-menu-line"></i>  
         </label>
-        <span class="logo-text">Modern Berlin Restaurant</span>
+        <a href="/" class="logo-text">Modern Berlin Restaurant</a>
         <ul>
         <li><a href="#home"class="active">Home</a></li>
         <li><a href="#menus" >Menu</a></li>
@@ -80,65 +81,38 @@
       </header>
     </section>
     <main>
-      <section id="menus">
-        <div class="popular">
-        <div class="container">
-          <div class="menu">
-            <h3>Customer Favorites</h3>
-            <h1 id="heading">Popular Categories</h1>
-          </div>
-        </div>
-      <div class="card-container">
-      </div>
-      <div class="card-container">
 
+
+    <section id="menus">
+  <div class="popular">
+    <div class="container">
+      <div class="menu">
+        <h3>Customer Favorites</h3>
+        <h1 id="heading">Popular Categories</h1>
       </div>
-    </section>
     </div>
-      <section id="offer">
-        <div class="carocel-content">
-          <h3>Special Dishes</h3>
-          <div class="symbol-content">
-            <h1>Standout Dishes <br> From Our Menu</h1>
-            <div class="symbols">
-              <h1 id="previous"><</h1>
-              <h1 id="next">></h1>
-            </div>
-          </div>
-        </div>
-        <div class="carocel"></div>
-      </section>
-      <section id="section5">
-        <div class="testimonial">
-          <div class="img">
-            <div class="plateAdd">
-              <img id="plate" src="./assets/images/plate.png" loading="lazy" alt="Our chef with signature dish" />
-              <p id="text">Our Best Chef 😁</p>
-            </div>
-          </div>
-          <div class="testimonials-content">
-            <h3>Testimonials</h3>
-            <h1>What Our Customers Say About Us</h1>
-            <p>
-              "Discover a culinary journey like no other, where each dish tells
-              a story of flavor and passion. Our customers rave about the
-              delightful meals, exceptional service, and cozy ambiance."
-            </p>
-            <div class="review">
-              <img src="./assets/images/dummy.png" />
-              <div class="review-content">
-                <h2>Customer Feedback</h2>
-                <div class="rating">
-                  <img src="./assets/images/fi-sr-star.png" alt="" />
-                  <h4>4.9</h4>
-                  <p>(18.6k Reviews)</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-    </main>
+    <div class="card-container">
+    </div>
+    <div class="card-container">
+    </div>
+  </div>
+</section>
+
+<section id="offer">
+  <div class="carocel-content">
+    <h3>Special Dishes</h3>
+    <div class="symbol-content">
+      <h1>Standout Dishes <br> From Our Menu</h1>
+      <div class="symbols">
+        <h1 id="previous"><</h1>
+        <h1 id="next">></h1>
+      </div>
+    </div>
+  </div>
+  <div class="carocel"></div>
+</section>
+
+</main>
     <footer>
       <section id="service">
         <div class="services-container">
@@ -201,6 +175,12 @@
     </footer>
     <script src="./script.js" defer></script>
     <script>
+      (function checkAuth() {
+        if (localStorage.getItem('isLoggedIn') !== 'true') {
+          window.location.href = 'login.html';
+        }
+      })();
+
       document.addEventListener('DOMContentLoaded', () => {
         const isLoggedIn = localStorage.getItem('isLoggedIn');
 
@@ -213,23 +193,36 @@
         const footerAccountLink = document.getElementById('footerAccountLink');
 
         if (isLoggedIn === 'true') {
-          loginLink.style.display = 'none';
-          signupLink.style.display = 'none';
-          accountLink.style.display = 'list-item';
+          if (loginLink) loginLink.style.display = 'none';
+          if (signupLink) signupLink.style.display = 'none';
+          if (accountLink) accountLink.style.display = 'list-item';
 
-          footerLoginLink.style.display = 'none';
-          footerSignupLink.style.display = 'none';
-          footerAccountLink.style.display = 'inline';
-        } else {
-          loginLink.style.display = 'list-item';
-          signupLink.style.display = 'list-item';
-          accountLink.style.display = 'none';
-
-          footerLoginLink.style.display = 'inline';
-          footerSignupLink.style.display = 'inline';
-          footerAccountLink.style.display = 'none';
+          if (footerLoginLink) footerLoginLink.style.display = 'none';
+          if (footerSignupLink) footerSignupLink.style.display = 'none';
+          if (footerAccountLink) footerAccountLink.style.display = 'inline';
         }
       });
+    </script>
+    <a href="/cart" class="floating-cart hidden" id="floatingCart">
+      <i class="ri-shopping-cart-line"></i>
+      <span class="cart-count" id="cartCount">0</span>
+    </a>
+    <script>
+      function updateCartBadge() {
+        const cart = JSON.parse(localStorage.getItem('cart')) || [];
+        const badge = document.getElementById('floatingCart');
+        const count = document.getElementById('cartCount');
+        if (badge && count) {
+          if (cart.length > 0) {
+            count.textContent = cart.length;
+            badge.classList.remove('hidden');
+          } else {
+            badge.classList.add('hidden');
+          }
+        }
+      }
+      document.addEventListener('DOMContentLoaded', updateCartBadge);
+      window.addEventListener('storage', updateCartBadge);
     </script>
   </body>
 </html>

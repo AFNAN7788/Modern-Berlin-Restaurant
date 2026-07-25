@@ -4,11 +4,19 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Reserve a Table – Modern Berlin Restaurant</title>
-    <link rel="stylesheet" href="./styles/booking.css" />
     <link rel="stylesheet" href="./fonts/remixicon.css" />
+    <link rel="stylesheet" href="./styles/booking.css" />
+    <script>
+      (function checkAuth() {
+        if (localStorage.getItem('isLoggedIn') !== 'true') {
+          window.location.href = 'login.html';
+        }
+      })();
+    </script>
   </head>
   <body>
-    <nav class="booking-nav">
+    <!-- Nav start -->
+    <div class="booking-nav">
       <a href="/" class="logo-text">Modern Berlin Restaurant</a>
       <div class="nav-links">
         <a href="/">Home</a>
@@ -16,9 +24,10 @@
         <a href="/contact">Contact</a>
         <a href="/cart">Cart</a>
       </div>
-    </nav>
+    </div>
+    <!-- Nav end -->
 
-    <main class="booking-page">
+    <main class="booking-page animate-in">
       <h1>Reserve a <span>Table</span></h1>
       <p class="subtitle">Choose your date, time and party size. We’ll confirm your reservation.</p>
 
@@ -151,7 +160,7 @@
             showMessage(data.message || 'Reservation failed.', true);
           }
         } catch (err) {
-          showMessage('Network error. Is the server running on http://localhost:5000?', true);
+          showMessage('Network error. Is the server running on http://localhost:3000?', true);
         } finally {
           submitBtn.disabled = false;
         }

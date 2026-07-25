@@ -20,5 +20,16 @@
     "specialRequests": "",
     "status": "confirmed",
     "createdAt": "2026-06-09T10:24:06.070Z"
+  },
+  {
+    "id": "1784893674269",
+    "name": "afnan",
+    "email": "afnan@example.com",
+    "date": "2026-07-27",
+    "time": "11:00",
+    "guests": 5,
+    "specialRequests": "High Chairs",
+    "status": "confirmed",
+    "createdAt": "2026-07-24T11:47:54.269Z"
   }
 ]

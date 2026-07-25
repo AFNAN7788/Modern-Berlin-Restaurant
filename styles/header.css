@@ -1,172 +1,112 @@
 @import url(./global.css);
-body {
-  box-sizing: border-box;
-}
+
 .header {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  width: 80%;
-  margin: auto auto 150px auto;
-  position: relative;
-  top: 100px;
+  max-width: 1280px;
+  width: 90%;
+  margin: 0 auto;
+  padding: 140px 0 100px 0;
+  gap: 40px;
 }
-#img1 {
-  display: inline-block;
-  height: 450px;
-  background-image: url(../assets/images/—Pngtree—circle\ clipart\ bright\ green\ circle_5553157.png);
-  background-repeat: no-repeat;
-  background-position: right;
-  background-size: contain;
-  padding-right: 20px;
-  width: 110%;
-}
-#title {
-  width: 447px;
-  font-weight: 800;
-  font-size: var(--heading-fs);
-  color: #F5F5F5;
-}
+
 .content {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 20px;
-  width: 45%;
+  gap: 24px;
+  width: 50%;
+  animation: slideInLeft 0.8s var(--ease-out) both;
 }
+
+#title {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: var(--heading-fs);
+  color: var(--text-primary);
+  line-height: 1.15;
+}
+
 #intro {
-  width: 90%;
-  color: #B0B0B0;
-  font-size: 26px;
-  font-weight: 500;
-  line-height: 44.33px;
+  color: var(--text-secondary);
+  font-size: var(--body-fs);
+  font-weight: 400;
+  line-height: 1.6;
   text-align: left;
 }
+
 span {
-  color: #C9A84C;
+  color: var(--accent);
 }
-@media only screen and (max-width: 1300px){
-  #img1 {
-    background-position: center;
-    padding-right: 170px;
-    height: 432px;
-    width: 113%;
-  }
-  .header{
-    width: 97%;
-    gap: 0px;
-  }
+
+.img {
+  width: 45%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: scaleIn 0.8s var(--ease-out) both;
 }
-@media only screen and (max-width: 1024px) {
+
+#img1 {
+  width: 100%;
+  max-width: 480px;
+  height: auto;
+  border-radius: var(--radius-full);
+  box-shadow: var(--shadow-lg), 0 0 30px rgba(212, 168, 67, 0.15);
+  border: 2px solid var(--accent-border);
+  transition: transform var(--transition-slow);
+}
+
+#img1:hover {
+  transform: rotate(3deg) scale(1.02);
+}
+
+/* ═══════════════════════════════════════════════
+   RESPONSIVE BREAKPOINTS
+   ═══════════════════════════════════════════════ */
+
+@media (max-width: 1024px) {
   .header {
-    display: flex;
-    justify-content: center;
-    align-items: left;
-    width: 98%;
-    margin: auto auto 150px auto;
-    gap: 0px;
-  }
-  #img1 {
-    display: inline-block;
-    height: 340px;
-    background-image: url(../assets/images/—Pngtree—circle\ clipart\ bright\ green\ circle_5553157.png);
-    background-repeat: no-repeat;
-    background-position: right;
-    background-size: contain;
-    padding-right: 0px;
-    width: 105%;
-    margin-left: -81px;
-  }
-  #title {
-    font-size: 45px;
-    width: 90%;
-  }
-  #intro {
-    font-size: 24px;
-    width: 100%;
+    padding: 120px 0 80px 0;
+    gap: 30px;
   }
 }
-@media only screen and (max-width: 990px) {
+
+@media (max-width: 858px) {
   .header {
-    width: 90%;
-    gap: 50px;
-  }
-  .content {
-    gap: 10px;
-  }
-  #title {
-    font-size: 34px;
-    width: 90%;
-    line-height: 40px;
-  }
-  #intro {
-    font-size: 20px;
-    width: 110%;
-    line-height: 33px;
-  }
-  #img1 {
-    width: 400px;
-    height: 300px;
-    padding-right: 20px;
-  }
-}
-@media only screen and (max-width: 860px) {
-  .header {
-    width: 90%;
-    gap: 50px;
-    position: static;
-  }
-  .content {
-    gap: 10px;
-  }
-  #title {
-    font-size: 34px;
-    width: 90%;
-    line-height: 40px;
-  }
-  #intro {
-    font-size: 20px;
-    width: 110%;
-    line-height: 33px;
-  }
-  #img1 {
-    width: 400px;
-    height: 300px;
-    padding-right: 20px;
-  }
-}
-@media only screen and (max-width: 600px) {
-  html, body {
-    overflow-x:hidden 
-  } 
-  .header {
-    margin: auto;
-    margin-bottom: 20px;
-    position: static;
-    width: 55%;
+    flex-direction: column;
     text-align: center;
+    padding: 110px 0 60px 0;
+    gap: 50px;
+  }
+
+  .content {
+    width: 100%;
     align-items: center;
-    justify-content: center;
-      gap: 50px;
-      overflow-x: hidden;
+  }
+
+  #intro {
+    text-align: center;
+    max-width: 600px;
+  }
+
+  .img {
+    width: 100%;
   }
 
   #img1 {
-    display: none;
+    max-width: 380px;
   }
-  .content {
-    gap: 3px;
-    width: 36%;
+}
+
+@media (max-width: 480px) {
+  .header {
+    padding: 100px 0 50px 0;
+    gap: 35px;
   }
-  #title {
-    font-size: 22px;
-    width: 300%;
-    line-height: 25px;
-  }
-  #intro {
-    font-size: 10px;
-    width: 290%;
-    line-height: 15px;
-    text-align: center;
+
+  #img1 {
+    max-width: 280px;
   }
 }

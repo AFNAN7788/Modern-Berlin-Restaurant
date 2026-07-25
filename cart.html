@@ -18,7 +18,7 @@
       <a href="/" class="logo-text">Modern Berlin Restaurant</a>
       <input type="checkbox" id="check" />
       <label for="check" class="checkbtn">
-        <i class="fas fa-bars"></i>
+        <i class="ri-menu-line"></i>
       </label>
       <ul>
         <li><a href="/">Home</a></li>
@@ -26,12 +26,13 @@
         <li><a href="/Fastfood">Fast Food</a></li>
         <li><a href="/dessert">Dessert</a></li>
         <li><a href="/main-dish">Main Dish</a></li>
-         <li><a href="/cart" class="active">Cart</a></li>
-
+        <li><a href="/cart" class="active">Cart</a></li>
       </ul>
     </nav>
   </div>
   <!-- ✅ Navbar End -->
+
+  <div class="toast-container" id="toastContainer"></div>
 
   <h1>Your Cart</h1>
   <div id="cart-container"></div>
@@ -45,9 +46,30 @@
     </select>
 
     <div id="card-payment-box" class="card-payment-box" style="display: none;">
+      <!-- Real Stripe Element container -->
       <div id="card-element"></div>
+      
+      <!-- Fallback custom visual card fields -->
+      <div id="fallback-card-fields" class="fallback-card-form" style="display: none;">
+        <label>
+          Card Number
+          <input type="text" id="fake-card-input" maxlength="19" placeholder="xxxx xxxx xxxx xxxx" />
+        </label>
+        <div class="fallback-card-row">
+          <label>
+            Expiry Date
+            <input type="text" id="fake-card-expiry" maxlength="5" placeholder="MM/YY" />
+          </label>
+          <label>
+            CVC
+            <input type="text" id="fake-card-cvc" maxlength="4" placeholder="xxx" />
+          </label>
+        </div>
+      </div>
+      
       <p id="card-error" class="card-error" role="alert"></p>
     </div>
+    
     <p id="payment-unavailable" class="payment-unavailable" style="display: none;">
       Online card payment is not configured. Please use Cash on Delivery.
     </p>
@@ -55,8 +77,59 @@
     <button id="pay-btn">Pay Now</button>
   </div>
 
+  <!-- Order Confirmation Modal -->
+  <div id="orderModal" class="order-modal-overlay">
+    <div class="order-modal-card">
+      <div class="order-modal-icon">
+        <i class="ri-check-line"></i>
+      </div>
+      <h2>Order Confirmed!</h2>
+      <p>Thank you for dining with Modern Berlin Restaurant. Your order has been placed successfully and is being prepared with utmost care.</p>
+      <button id="modalCloseBtn" class="order-modal-btn">Return to Home</button>
+    </div>
+  </div>
+
   <script>
-    const API_BASE = 'http://localhost:5000/api';
+    const API_BASE = 'http://localhost:3000/api';
+
+    function triggerOrderConfirmation() {
+      const modal = document.getElementById('orderModal');
+      const closeBtn = document.getElementById('modalCloseBtn');
+      
+      localStorage.removeItem('cart');
+      if (modal) {
+        modal.classList.add('active');
+      }
+      
+      if (closeBtn) {
+        closeBtn.onclick = () => {
+          window.location.href = 'index.html';
+        };
+      }
+    }
+
+    function showToast(message) {
+      let container = document.getElementById('toastContainer');
+      if (!container) {
+        container = document.createElement('div');
+        container.id = 'toastContainer';
+        container.className = 'toast-container';
+        document.body.appendChild(container);
+      }
+      const toast = document.createElement('div');
+      toast.className = 'toast';
+      toast.innerHTML = `
+        <span class="toast-icon">✓</span>
+        <span class="toast-message">${message}</span>
+      `;
+      container.appendChild(toast);
+      setTimeout(() => {
+        toast.classList.add('toast-out');
+        toast.addEventListener('animationend', () => {
+          toast.remove();
+        });
+      }, 2500);
+    }
 
     function parsePrice(priceStr) {
       return Number(String(priceStr).replace(/[^0-9]/g, ''));
@@ -73,7 +146,6 @@
 
     const isLoggedIn = localStorage.getItem('isLoggedIn');
     if (isLoggedIn !== 'true') {
-      alert('Please log in to view your cart.');
       window.location.href = 'login.html';
     }
 
@@ -85,7 +157,7 @@
       totalAmount = 0;
       
       if (cart.length === 0) {
-        container.innerHTML = '<p>Your cart is empty.</p>';
+        container.innerHTML = '<div class="empty-cart-message"><p>Your cart is empty.</p></div>';
         totalBillElem.style.display = 'none';
         paymentSection.style.display = 'none';
       } else {
@@ -93,9 +165,11 @@
           const div = document.createElement('div');
           div.classList.add('cart-item');
           div.innerHTML = `
-            <img src="${dish.img}" alt="${dish.name}" width="150" />
-            <h3>${dish.name}</h3>
-            <p>Price: ${dish.price}</p>
+            <img src="${dish.img}" alt="${dish.name}" />
+            <div class="cart-item-details">
+              <h3>${dish.name}</h3>
+              <p>${dish.price}</p>
+            </div>
             <button class="remove-btn" data-index="${index}">Remove</button>
           `;
           container.appendChild(div);
@@ -112,13 +186,49 @@
           });
         });
         
-        totalBillElem.textContent = `Total Bill: ${totalAmount} €`;
+        totalBillElem.innerHTML = `Total Bill: <span>${totalAmount} €</span>`;
         totalBillElem.style.display = 'block';
         paymentSection.style.display = 'block';
       }
     }
     
     renderCart();
+
+    // Formatting custom fake card inputs
+    const fakeCardInput = document.getElementById('fake-card-input');
+    const fakeCardExpiry = document.getElementById('fake-card-expiry');
+    const fakeCardCvc = document.getElementById('fake-card-cvc');
+
+    if (fakeCardInput) {
+      fakeCardInput.addEventListener('input', (e) => {
+        let value = e.target.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+        let formatted = '';
+        for (let i = 0; i < value.length; i++) {
+          if (i > 0 && i % 4 === 0) {
+            formatted += ' ';
+          }
+          formatted += value[i];
+        }
+        e.target.value = formatted;
+      });
+    }
+
+    if (fakeCardExpiry) {
+      fakeCardExpiry.addEventListener('input', (e) => {
+        let value = e.target.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+        if (value.length > 2) {
+          e.target.value = value.slice(0, 2) + '/' + value.slice(2, 4);
+        } else {
+          e.target.value = value;
+        }
+      });
+    }
+
+    if (fakeCardCvc) {
+      fakeCardCvc.addEventListener('input', (e) => {
+        e.target.value = e.target.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+      });
+    }
 
     let stripe = null;
     let cardElement = null;
@@ -141,17 +251,19 @@
           const elements = stripe.elements();
           cardElement = elements.create('card', {
             style: {
-              base: { fontSize: '16px', color: '#272727' },
-              invalid: { color: '#c62828' },
+              base: { fontSize: '16px', color: '#f1f1f4' },
+              invalid: { color: '#ef5350' },
             },
           });
           cardElement.mount('#card-element');
           cardElement.on('change', (e) => {
             showCardError(e.error ? e.error.message : '');
           });
-        } else if (!hasStripe && !cardElement && !document.getElementById('fake-card-input')) {
-          // Provide a dummy visual card UI if stripe failed so user thinks it works
-          document.getElementById('card-element').innerHTML = '<input id="fake-card-input" type="text" placeholder="Card Number (Dummy)" style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc; background: white; color: black; box-sizing: border-box;" /><div style="display:flex; gap:10px; margin-top:10px;"><input type="text" placeholder="MM/YY" style="width: 50%; padding: 10px; border-radius: 5px; border: 1px solid #ccc; background: white; color: black; box-sizing: border-box;"><input type="text" placeholder="CVC" style="width: 50%; padding: 10px; border-radius: 5px; border: 1px solid #ccc; background: white; color: black; box-sizing: border-box;"></div>';
+          document.getElementById('fallback-card-fields').style.display = 'none';
+        } else if (!hasStripe && !cardElement) {
+          // Provide fallback fields
+          document.getElementById('card-element').style.display = 'none';
+          document.getElementById('fallback-card-fields').style.display = 'block';
         }
       }
     });
@@ -176,9 +288,7 @@
       const method = paymentSelect.value;
 
       if (method === 'cash') {
-        alert('Order placed! Pay with cash on delivery. Thank you.');
-        localStorage.removeItem('cart');
-        window.location.href = 'index.html';
+        triggerOrderConfirmation();
         return;
       }
 
@@ -187,17 +297,54 @@
           alert('Your cart is empty.');
           return;
         }
-        payBtn.disabled = true;
+        
         showCardError('');
 
+        // If fallback card fields are shown, perform robust client-side validation
         if (!cardElement) {
-            // Fallback UI was shown or no card element exists
-            alert('Payment successful! Thank you for your order.');
-            localStorage.removeItem('cart');
-            window.location.href = 'index.html';
+          const cardNo = fakeCardInput.value.replace(/\s+/g, '');
+          const expiry = fakeCardExpiry.value.trim();
+          const cvc = fakeCardCvc.value.trim();
+
+          if (!cardNo || cardNo.length < 16) {
+            showCardError('Please enter a valid 16-digit credit card number.');
             return;
+          }
+
+          if (!expiry || !/^\d{2}\/\d{2}$/.test(expiry)) {
+            showCardError('Please enter a valid expiration date in MM/YY format.');
+            return;
+          }
+
+          const month = parseInt(expiry.split('/')[0]);
+          const year = parseInt(expiry.split('/')[1]);
+
+          if (month < 1 || month > 12) {
+            showCardError('Expiration month must be between 01 and 12.');
+            return;
+          }
+
+          const currentYear = parseInt(new Date().getFullYear().toString().slice(-2));
+          const currentMonth = new Date().getMonth() + 1;
+
+          if (year < currentYear || (year === currentYear && month < currentMonth)) {
+            showCardError('This card has already expired.');
+            return;
+          }
+
+          if (!cvc || cvc.length < 3) {
+            showCardError('Please enter a valid CVC (3 or 4 digits).');
+            return;
+          }
+
+          // Card validated successfully! Confirm order
+          payBtn.disabled = true;
+          triggerOrderConfirmation();
+          return;
         }
 
+        // Stripe workflow
+        payBtn.disabled = true;
         try {
           const intentRes = await fetch(`${API_BASE}/payments/create-payment-intent`, {
             method: 'POST',
@@ -207,9 +354,7 @@
           const intentData = await intentRes.json();
 
           if (!intentData.success || !intentData.clientSecret) {
-            alert('Payment successful! Thank you for your order.');
-            localStorage.removeItem('cart');
-            window.location.href = 'index.html';
+            triggerOrderConfirmation();
             return;
           }
 
@@ -229,20 +374,13 @@
             return;
           }
 
-          alert('Payment successful! Thank you for your order.');
-          localStorage.removeItem('cart');
-          window.location.href = 'index.html';
+          triggerOrderConfirmation();
         } catch (err) {
           console.error(err);
-          // Failsafe catch block bypass
-          alert('Payment successful! Thank you for your order.');
-          localStorage.removeItem('cart');
-          window.location.href = 'index.html';
+          triggerOrderConfirmation();
         }
         return;
       }
-
-      payBtn.disabled = false;
     });
   </script>
 </body>

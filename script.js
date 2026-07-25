@@ -1,3 +1,26 @@
+function showToast(message) {
+  let container = document.getElementById('toastContainer');
+  if (!container) {
+    container = document.createElement('div');
+    container.id = 'toastContainer';
+    container.className = 'toast-container';
+    document.body.appendChild(container);
+  }
+  const toast = document.createElement('div');
+  toast.className = 'toast';
+  toast.innerHTML = `
+    <span class="toast-icon">✓</span>
+    <span class="toast-message">${message}</span>
+  `;
+  container.appendChild(toast);
+  setTimeout(() => {
+    toast.classList.add('toast-out');
+    toast.addEventListener('animationend', () => {
+      toast.remove();
+    });
+  }, 2500);
+}
+
 //cards
 const data = [
   {
@@ -182,8 +205,10 @@ if (container) {
       let cart = JSON.parse(localStorage.getItem("cart")) || [];
       cart.push(dish);
       localStorage.setItem("cart", JSON.stringify(cart));
-      alert(`${c.dishname} added to cart!`);
-      window.location.href = "cart.html";
+      showToast(`${c.dishname} added to cart!`);
+      if (typeof updateCartBadge === 'function') {
+        updateCartBadge();
+      }
     }
   });
   itemContainer.appendChild(addToCartButton);
@@ -254,8 +279,8 @@ const footerdata = [
   },
   {
     heading: "Contact Us",
-    c1: "info@modernberlinrestaurant.com",
-    c2: "+92 333 4303018",
+    c1: "contact@modernberlinrestaurant.com",
+    c2: "",
     c3: "",
     c4: "",
   },
@@ -297,17 +322,17 @@ footerdata.forEach((data) => {
         iconLinks.href = "https://www.facebook.com";
         iconLinks.target = "_blank";
       } else if (i === 2) {
+        icon.id = "ig";
         iconLinks.href = "https://www.instagram.com/hassantahir688/";
         iconLinks.target = "_blank";
-        icon.id = "fang";
       } else if (i === 3) {
+        icon.id = "tw";
         iconLinks.href = "https://www.twitter.com";
         iconLinks.target = "_blank";
-        icon.id = "fang";
       } else if (i === 4) {
+        icon.id = "yt";
         iconLinks.href = "https://www.youtube.com/@unitedproductions8062";
         iconLinks.target = "_blank";
-        icon.id = "fang";
       }
   }
   if (data.copy) {
@@ -392,9 +417,12 @@ footerdata.forEach((data) => {
     const links = document.createElement("a");
     links.innerText = data.c1;
     links.href = "mailto:example@example.com";
-    lists.innerText = data.c2;
     lastlist.appendChild(links);
-    lastlist.appendChild(lists);
+    // Only add phone list item if not empty
+    if (data.c2 && data.c2.trim() !== "") {
+      lists.innerText = data.c2;
+      lastlist.appendChild(lists);
+    }
     allLists.appendChild(lastlist);
     footer.appendChild(allLists);
     allLists.id = "lists";

@@ -4,5 +4,17 @@
     "name": "ahmed",
     "email": "ahmed22@gmail.com",
     "password": "$2b$10$xhbTQIkuVV3c8FcBzB0NduVl1NLrZlhZNDk8YBHkFbVaLTs85ozo6"
+  },
+  {
+    "id": "1784891168454",
+    "name": "ahmed",
+    "email": "ahmed12@gmail.com",
+    "password": "$2b$10$IKXdy7bpKj8nWjZalcVLRuVTWQJvXTtjBwnVvbNKwNAlJO1EB0VMC"
+  },
+  {
+    "id": "1784892448152",
+    "name": "Afnan Ahmed",
+    "email": "afnan@example.com",
+    "password": "$2b$10$lFBdHmtw7NmJvxOJukgwr.0OtNbuZKQvKlJSgJSSSb1zQDSqe5S02"
   }
 ]

@@ -4,18 +4,12 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Modern Berlin Restaurant - Breakfast</title>
-
-  <!-- Load Navbar CSS first -->
- <link rel="stylesheet" href="./fonts/remixicon.css">
-    <link rel="stylesheet" href="./styles/global.css" />
-    <link rel="stylesheet" href="./styles/header.css" />
-    <link rel="stylesheet" href="./styles/popular.css" />
-    <link rel="stylesheet" href="./styles/nav.css">
-    <link rel="stylesheet" href="./styles/testimonial.css" />
-    <link rel="stylesheet" href="./styles/services.css">
-    <link rel="stylesheet" href="./styles/footer.css" />
-    <link rel="stylesheet" href="./styles/carocel.css" />
-      <link rel="stylesheet" href="dishpage.css" />
+  <link rel="stylesheet" href="./fonts/remixicon.css">
+  <link rel="stylesheet" href="./styles/global.css" />
+  <link rel="stylesheet" href="./styles/header.css" />
+  <link rel="stylesheet" href="./styles/nav.css">
+  <link rel="stylesheet" href="./styles/footer.css" />
+  <link rel="stylesheet" href="dishpage.css" />
 </head>
 <body>
 
@@ -25,7 +19,7 @@
       <a href="/" class="logo-text">Modern Berlin Restaurant</a>
       <input type="checkbox" id="check" />
       <label for="check" class="checkbtn">
-        <i class="fas fa-bars"></i>
+        <i class="ri-menu-line"></i>
       </label>
       <ul>
         <li><a href="/">Home</a></li>
@@ -33,68 +27,45 @@
         <li><a href="/Fastfood">Fast Food</a></li>
         <li><a href="/dessert">Dessert</a></li>
         <li><a href="/main-dish">Main Dish</a></li>
-         <li><a href="/cart">Cart</a></li>
-
+        <li><a href="/cart">Cart</a></li>
       </ul>
     </nav>
   </div>
   <!-- ✅ Navbar End -->
 
+  <div class="toast-container" id="toastContainer"></div>
+
   <!-- ✅ Dish Cards Container -->
   <div id="dish-container"></div>
 
-
   <footer>
-  <section id="service">
-    <div class="services-container">
-      <div class="text-container">
-        <h3>OUR STORY & SERVICES</h3>
-        <p class="p-2">Our Culinary Journey <br>And Services</p>
-        <p class="p-3">Rooted in passion, we curate unforgettable dining experiences and 
-        offer exceptional services, blending culinary artistry with warm hospitality.    
-        </p>
-        <button class="btn-3">Explore</button>
-      </div>
+    <section id="section7">
+      <div class="footer"></div>
+    </section>
+  </footer>
 
-      <div class="cards-container">
-        <div class="card1" id="more-cards">
-          <img src="./assets/images/fi-rr-salad.png" >
-          <p class="heading">CATERING</p>
-          <p class="paragraph">Delight your guests<br>with our flavors and 
-          <br> presentation</p>
-        </div>
-        <div class="card1" id="more-cards">
-          <img src="./assets/images/fi-rr-time-fast.png" >
-          <p class="heading">FAST DELIVERY</p>
-          <p class="paragraph"> We deliver your order <br>promptly to your door</p>
-        </div>
-        <div class="card1" id="more-cards">
-          <img src="./assets/images/fi-rr-shopping-cart-check.png" >
-          <p class="heading">ONLINE ORDERING</p>
-          <p class="paragraph">Explore menu & order <br> with ease using our <br> Online Ordering </p>
-        </div>
-        <div class="card1" id="more-cards">
-          <img src="./assets/images/fi-rr-gift.png" >
-          <p class="heading">GIFT CARDS</p>
-          <p class="paragraph">Give the gift of <br> exceptional dining with <br> Foodi Gift Cards</p>
-        </div>
-      </div>
-    </div>
-  </section>
+  <a href="/cart" class="floating-cart hidden" id="floatingCart">
+    <i class="ri-shopping-cart-line"></i>
+    <span class="cart-count" id="cartCount">0</span>
+  </a>
 
-  <section id="section7">
-    <div class="footer">
-    </div>
-  </section>
-</footer>
-
-
-  <!-- ✅ JavaScript -->
   <script>
-    // Set category before loading dishPage.js
     localStorage.setItem("selectedCategory", "Breakfast");
-  
-            
+    function updateCartBadge() {
+      const cart = JSON.parse(localStorage.getItem('cart')) || [];
+      const badge = document.getElementById('floatingCart');
+      const count = document.getElementById('cartCount');
+      if (badge && count) {
+        if (cart.length > 0) {
+          count.textContent = cart.length;
+          badge.classList.remove('hidden');
+        } else {
+          badge.classList.add('hidden');
+        }
+      }
+    }
+    document.addEventListener('DOMContentLoaded', updateCartBadge);
+    window.addEventListener('storage', updateCartBadge);
   </script>
   <script src="./dishPage.js"></script>
   <script src="./script.js" defer></script>
