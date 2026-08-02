@@ -3,7 +3,6 @@ const path = require('path');
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
 
-// Ensure data directory exists
 if (!fs.existsSync(DATA_DIR)) {
   fs.mkdirSync(DATA_DIR, { recursive: true });
 }
@@ -24,15 +23,45 @@ const readData = (filename) => {
   }
 };
 
+const writeLocks = new Map();
+
 const writeData = (filename, data) => {
-  const filePath = getFilePath(filename);
-  try {
-    fs.writeFileSync(filePath, JSON.stringify(data, null, 2), 'utf8');
-    return true;
-  } catch (err) {
-    console.error(`Error writing ${filename}:`, err);
-    return false;
-  }
+  return new Promise((resolve, reject) => {
+    const filePath = getFilePath(filename);
+    const queue = writeLocks.get(filename) || [];
+
+    const task = { data, resolve, reject };
+    queue.push(task);
+    writeLocks.set(filename, queue);
+
+    const processQueue = () => {
+      const currentQueue = writeLocks.get(filename);
+      if (!currentQueue || currentQueue.length === 0) {
+        writeLocks.delete(filename);
+        return;
+      }
+
+      const current = currentQueue[0];
+      try {
+        fs.writeFileSync(filePath, JSON.stringify(current.data, null, 2), 'utf8');
+        current.resolve();
+      } catch (err) {
+        console.error(`Error writing ${filename}:`, err);
+        current.reject(err);
+      }
+
+      const remaining = currentQueue.slice(1);
+      writeLocks.set(filename, remaining);
+
+      if (remaining.length === 0) {
+        writeLocks.delete(filename);
+      } else {
+        setImmediate(processQueue);
+      }
+    };
+
+    setImmediate(processQueue);
+  });
 };
 
 module.exports = {

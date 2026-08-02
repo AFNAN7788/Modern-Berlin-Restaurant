@@ -23,7 +23,7 @@ router.get('/slots', (req, res) => {
 });
 
 // Create a booking
-router.post('/', (req, res) => {
+router.post('/', async (req, res) => {
   try {
     const { name, email, date, time, guests, specialRequests } = req.body;
     const bookings = readData('bookings');
@@ -57,7 +57,7 @@ router.post('/', (req, res) => {
       createdAt: new Date().toISOString(),
     };
     bookings.push(booking);
-    writeData('bookings', bookings);
+    await writeData('bookings', bookings);
     res.status(201).json({ success: true, message: 'Table reserved successfully.', booking });
   } catch (err) {
     console.error(err);

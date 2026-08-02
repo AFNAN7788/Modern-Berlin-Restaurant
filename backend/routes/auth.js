@@ -26,7 +26,7 @@ router.post('/register', async (req, res) => {
     };
 
     users.push(newUser);
-    writeData('users', users);
+    await writeData('users', users);
 
     const payload = {
       user: {

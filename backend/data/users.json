@@ -16,5 +16,11 @@
     "name": "Afnan Ahmed",
     "email": "afnan@example.com",
     "password": "$2b$10$lFBdHmtw7NmJvxOJukgwr.0OtNbuZKQvKlJSgJSSSb1zQDSqe5S02"
+  },
+  {
+    "id": "1785682478731",
+    "name": "Hasham",
+    "email": "Hasham13@gmail.com",
+    "password": "$2b$10$dEACOHij14HyP4iZnjQBbe3sHEYv/COkqbszueHAGKOry6CfsbhY2"
   }
 ]
