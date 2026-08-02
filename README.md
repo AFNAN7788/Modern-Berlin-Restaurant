@@ -197,45 +197,6 @@ The frontend proxies all `/api` requests to the backend at `http://localhost:500
 
 ---
 
-## Features in Detail
-
-### Authentication
-- Protected routes for cart, booking, and account pages
-- JWT-based auth stored in `localStorage`
-- Automatic redirect to login for unauthenticated users
-- Profile editing with persistent name, email, phone, and address
-
-### Menu & Cart
-- 4 categories: Main Dish, Breakfast, Dessert, Fastfood
-- 55+ Berlin-themed dishes with images and descriptions
-- Add-to-cart flow with login prompt for guests
-- Quantity adjustment and item removal
-- Cart persists in `localStorage`
-
-### Reservations
-- Date-based time slot availability
-- 30-minute intervals from 11:00 to 21:00
-- Prevents double-booking of the same slot
-- Displays user’s existing reservations
-
-### Payments
-- Cash on Delivery (always available)
-- Credit/Debit Card via Stripe (requires backend keys)
-- Graceful fallback to manual card fields if Stripe is unavailable
-
----
-
-## Storage
-
-The backend uses lightweight **file-based JSON storage** instead of a database:
-
-- `backend/data/users.json` — registered users
-- `backend/data/bookings.json` — table reservations
-- `backend/data/carts.json` — shopping carts
-
-Data is read from and written to these files on every request using a serialized write-queue to prevent race conditions.
-
----
 
 ## Contributing
 
@@ -249,10 +210,6 @@ Data is read from and written to these files on every request using a serialized
 
 ## License
 
-ISC
+This project is licensed under the MIT License - see the LICENSE file for details.
 
 ---
-
-## Author
-
-Built with ❤️ for Modern Berlin Restaurant.
