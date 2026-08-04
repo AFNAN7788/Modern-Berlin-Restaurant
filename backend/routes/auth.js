@@ -96,4 +96,49 @@ router.post('/login', async (req, res) => {
   }
 });
 
+// Update profile (name, email, password)
+async function handleUpdate(req, res) {
+  try {
+    const { currentEmail, name, email, password } = req.body;
+    const users = readData('users');
+
+    const user = users.find((u) => u.email === currentEmail);
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'User not found' });
+    }
+
+    if (email && email !== currentEmail) {
+      const existing = users.find((u) => u.email === email);
+      if (existing) {
+        return res.status(400).json({ success: false, message: 'Email is already in use' });
+      }
+      user.email = email;
+    }
+
+    if (name) {
+      user.name = name;
+    }
+
+    if (password) {
+      const salt = await bcrypt.genSalt(10);
+      user.password = await bcrypt.hash(password, salt);
+    }
+
+    await writeData('users', users);
+
+    res.json({
+      success: true,
+      message: 'Profile updated successfully',
+      user: { id: user.id, name: user.name, email: user.email },
+    });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ success: false, message: err.message || 'Server error' });
+  }
+}
+
+// Register handler for both PUT and POST to be tolerant to clients
+router.put('/update', handleUpdate);
+router.post('/update', handleUpdate);
+
 module.exports = router;

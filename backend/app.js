@@ -9,6 +9,12 @@ const PORT = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 
+// Request logger for debugging route matching
+app.use((req, res, next) => {
+  console.log('[REQ]', req.method, req.originalUrl);
+  next();
+});
+
 // Routes (now in‑memory, no MongoDB/mongoose)
 const authRoutes = require('./routes/auth');
 const cartRoutes = require('./routes/cart');
@@ -24,7 +30,11 @@ app.get('/', (req, res) => {
   res.send('API is running without MongoDB (in‑memory storage only).');
 });
 
-// Start the server
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+// Start the server locally
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
+}
+
+module.exports = app;
